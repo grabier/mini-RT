@@ -1,0 +1,97 @@
+CC = gcc
+CFLAGS = -g -Wall -Wextra -Werror #-fsanitize=address
+
+LIBFT_DIR = ./libft
+LIBFT = $(LIBFT_DIR)/libft.a
+
+MLX42_DIR = ./MLX42
+MLX42 = $(MLX42_DIR)/libmlx42.a
+
+INCLUDES = -I$(LIBFT_DIR) -I$(MLX42_DIR)/include/MLX42
+SRC_DIR = ./src
+
+SRCS = $(SRC_DIR)/miniRT.c \
+	   $(SRC_DIR)/gnl.c \
+	   $(SRC_DIR)/parsing.c \
+	   $(SRC_DIR)/ft_atod.c \
+	   $(SRC_DIR)/ambient_parsing.c \
+	   $(SRC_DIR)/camera_parsing.c \
+	   $(SRC_DIR)/light_parsing.c \
+	   $(SRC_DIR)/utils1.c \
+	   $(SRC_DIR)/sphere_lst.c \
+	   $(SRC_DIR)/sphere_parsing.c \
+	   $(SRC_DIR)/plane_lst.c \
+	   $(SRC_DIR)/plane_parsing.c \
+	   $(SRC_DIR)/cylinder_lst.c \
+	   $(SRC_DIR)/cylinder_parsing.c \
+	   $(SRC_DIR)/t_vec_ops_1.c \
+	   $(SRC_DIR)/t_vec_ops_2.c \
+	   $(SRC_DIR)/ray_tracer.c \
+	   $(SRC_DIR)/light_calc.c \
+	   $(SRC_DIR)/shadow.c \
+	   $(SRC_DIR)/hit_lst.c \
+	   $(SRC_DIR)/parsing_utils.c \
+	   $(SRC_DIR)/free.c \
+	   $(SRC_DIR)/init.c \
+	   $(SRC_DIR)/sphere_colission.c \
+	   $(SRC_DIR)/sphere_colission_2.c \
+	   $(SRC_DIR)/plane_colission.c \
+	   $(SRC_DIR)/cylinder_colission.c \
+	   $(SRC_DIR)/cylinder_colission_2.c \
+	   $(SRC_DIR)/cy_top_colission.c \
+	   $(SRC_DIR)/cy_shadows.c \
+
+
+OBJ_DIR = ./obj
+OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+
+NAME = miniRT
+
+# Colores
+CYAN   		= \033[1;36m
+LILAC       = \033[1;35m
+DARK_BLUE   = \033[1;34m
+GREEN       = \033[1;32m
+RESET       = \033[0m
+
+# Reglas
+all: $(NAME)
+
+$(NAME): $(LIBFT) $(MLX42) $(OBJS)
+	@printf "$(CYAN)[Building Main] Compiling $(NAME)...\n$(RESET)"
+	@$(CC) $(CFLAGS) $(OBJS) -v $(LIBFT) $(MLX42) -ldl -lglfw -pthread -lm -o $(NAME)
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+	@mkdir -p $(dir $@)
+	@printf "$(LILAC)[Compiling] $(RESET) $<\n"
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+$(OBJ_DIR):
+	@printf "$(DARK_BLUE)[Directory] Creating object directory $(OBJ_DIR)...\n$(RESET)"
+	@mkdir -p $(OBJ_DIR)
+
+$(LIBFT):
+	@printf "$(LILAC)[Library] Building libft...\n$(RESET)"
+	@$(MAKE) -C $(LIBFT_DIR)
+	@$(MAKE) -C $(LIBFT_DIR) clean
+
+$(MLX42):
+	@printf "$(LILAC)[Library] Building MLX42...\n$(RESET)"
+	@$(MAKE) -C $(MLX42_DIR)
+	@$(MAKE) -C $(MLX42_DIR) clean
+
+clean:
+	@printf "$(LAVENDER)[Cleaning] Removing object files fdf\n$(RESET)"
+	@rm -rf $(OBJ_DIR)/*.o
+
+fclean: clean
+	@printf "$(LAVENDER)[Cleaning] Removing $(NAME), $(LIBFT) & $(MLX42)\n$(RESET)"
+	@$(MAKE) -C $(LIBFT_DIR) fclean
+	@$(MAKE) -C $(MLX42_DIR) fclean
+	@rm -f $(NAME)
+
+re: fclean all
+
+bonus: re
+
+.PHONY: all clean fclean re bonus

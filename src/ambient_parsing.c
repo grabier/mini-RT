@@ -1,0 +1,52 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ambient_parsing.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aehrl <aehrl@student.42malaga.com>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/21 19:42:04 by gmontoro          #+#    #+#             */
+/*   Updated: 2025/09/17 21:35:58 by aehrl            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../miniRT.h"
+
+int	ft_init_t_color_am(t_parse *program, int r, int g, int b)
+{
+	if (r > 255 || g > 255 || b > 255 || r < 0 || g < 0 || b < 0)
+		return (0);
+	program->am_color.r = (unsigned char)r;
+	program->am_color.g = (unsigned char)g;
+	program->am_color.b = (unsigned char)b;
+	return (1);
+}
+
+int	ft_parse_ambient(char **spline, t_parse *program)
+{
+	float	f;
+	char	**sp_aux;
+	int		aux;
+
+	f = ft_atod(spline[1]);
+	if (f < 0.0 || f > 1.0 || fabs(f - 2.232323) < 0.0001)
+		return (printf("ambient ratio invalid\n"), ft_free(spline), 0);
+	program->am_ratio = f;
+	sp_aux = ft_split(spline[2], ',');
+	if (!ft_check_color(sp_aux))
+	{
+		return (printf("ambient color out invalid\n"), ft_free(sp_aux),
+			ft_free(spline), 0);
+	}
+	aux = ft_atoi(sp_aux[0]);
+	if (!ft_init_t_color_am(program, aux, ft_atoi(sp_aux[1]),
+			ft_atoi(sp_aux[2])))
+	{
+		return (printf("ambient color invalid\n"), ft_free(sp_aux),
+			ft_free(spline), 0);
+	}
+	if (spline[3] != NULL)
+		return (ft_free(sp_aux), 0);
+	program->a++;
+	return (ft_free(sp_aux), ft_free(spline), 1);
+}
