@@ -7,45 +7,45 @@
 [![Math](https://img.shields.io/badge/Math-Linear_Algebra-orange?style=for-the-badge)](https://en.wikipedia.org/wiki/Linear_algebra)
 
 ![Main Render](assets/mini-RT1.png)
-*(Renderizado de prueba "Rainbow Ring" generado con el motor)*
+*("Rainbow Ring" test render generated with the engine)*
 
-## 🔦 Introducción
+## 🔦 Introduction
 
-**miniRT** es un motor de renderizado basado en la física (Ray Tracing) escrito desde cero en C. A diferencia de la rasterización tradicional, este proyecto simula el comportamiento real de los rayos de luz: se lanzan rayos desde la cámara, se calculan intersecciones con objetos geométricos y se determina el color del píxel basándose en la iluminación y las sombras.
+**miniRT** is a physics-based rendering engine (Ray Tracing) written from scratch in C. Unlike traditional rasterization, this project simulates the real behavior of light rays: rays are cast from the camera, intersections with geometric objects are calculated, and pixel color is determined based on lighting and shadows.
 
-El objetivo es demostrar un dominio sólido del **álgebra lineal** (vectores, matrices, producto escalar) y la **optimización de código** sin depender de motores gráficos externos.
+The goal is to demonstrate a solid mastery of **linear algebra** (vectors, matrices, dot products) and **code optimization** without relying on external graphics engines.
 
 ---
 
-## 🖼️ Galería y Capacidades Físicas
+## 🖼️ Gallery & Physics Capabilities
 
-### La "Cornell Box" (Test de Iluminación)
-Esta escena clásica demuestra la capacidad del motor para manejar múltiples geometrías (planos, esferas, cilindros) y calcular sombras arrojadas ("Hard Shadows") con precisión desde una fuente de luz puntual.
+### The "Cornell Box" (Lighting Test)
+This classic scene demonstrates the engine's ability to handle multiple geometries (planes, spheres, cylinders) and calculate cast shadows ("Hard Shadows") with precision from a point light source.
 
 ![Cornell Box](assets/mini-RT2.png)
 
-### Características Técnicas
-* **Primitivas Geométricas:**
-    * **Esferas:** Intersección analítica (ecuación cuadrática).
-    * **Planos:** Intersección vectorial infinita.
-    * **Cilindros:** Superficie curva finita con tapas (el cálculo más complejo del proyecto).
-* **Iluminación (Modelo Phong Simplificado):**
-    * **Luz Ambiente:** Iluminación base constante.
-    * **Luz Difusa:** Calculada según el ángulo de incidencia entre el rayo de luz y la normal de la superficie (`N · L`).
-* **Cámara:** Posicionamiento y orientación completos en espacio 3D con FOV variable.
+### Technical Features
+* **Geometric Primitives:**
+    * **Spheres:** Analytical intersection (quadratic equation).
+    * **Planes:** Infinite vector intersection.
+    * **Cylinders:** Finite curved surface with caps (the most complex calculation in the project).
+* **Lighting (Simplified Phong Model):**
+    * **Ambient Light:** Constant base illumination.
+    * **Diffuse Light:** Calculated based on the angle of incidence between the light ray and the surface normal (`N · L`).
+* **Camera:** Full 3D positioning and orientation with variable FOV.
 
 ---
 
-## 🛠️ Instalación y Uso
+## 🛠️ Installation & Usage
 
-El proyecto requiere un entorno Unix (Linux/Mac) y la librería gráfica MinilibX (incluida o instalada en el sistema).
+The project requires a Unix environment (Linux/Mac) and the MinilibX graphics library (included or system-installed).
 
 ```bash
-# 1. Clona el repositorio
-git clone [https://github.com/grabier/miniRT.git]
+# 1. Clone the repository
+git clone [https://github.com/grabier/miniRT.git](https://github.com/grabier/miniRT.git)
 
-# 2. Compila el ejecutable
+# 2. Compile the executable
 cd miniRT && make
 
-# 3. Ejecuta una escena
+# 3. Run a scene
 ./miniRT scenes/scene_7.rt
